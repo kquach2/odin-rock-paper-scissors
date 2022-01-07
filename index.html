@@ -7,7 +7,7 @@
 <body>
   <script>
     function computerPlay() {
-        var randomNum = Math.floor(Math.random()*3);
+        const randomNum = Math.floor(Math.random()*3);
         if (randomNum == 0) {
             return 'Rock';
         }
@@ -16,6 +16,22 @@
         }
         else return 'Paper';
     }
+    
+    function playRound(playerSelection, computerSelection) {
+        const playerSelectionCorrected = playerSelection.substr(0,1).toUpperCase() + playerSelection.substr(1).toLowerCase();
+        const winnerDecl = (playerSelectionCorrected == 'Rock' && computerSelection == 'Scissors') ? 'You win! Rock beats Scissors' :
+            (playerSelectionCorrected == 'Rock' && computerSelection == 'Paper') ? 'You lose! Paper beats Rock' :
+            (playerSelectionCorrected == 'Rock' && computerSelection == 'Rock') ? 'It\'s a Tie!' :
+            (playerSelectionCorrected == 'Scissors' && computerSelection == 'Rock') ? 'You lose! Rock beats Scissors' :
+            (playerSelectionCorrected == 'Scissors' && computerSelection == 'Paper') ? 'You win! Scissors beats Paper' :
+            (playerSelectionCorrected == 'Scissors' && computerSelection == 'Scissors') ? 'It\'s a Tie!' :
+            (playerSelectionCorrected == 'Paper' && computerSelection == 'Scissors') ? 'You lose! Scissors beats Paper' :
+            (playerSelectionCorrected == 'Paper' && computerSelection == 'Rock') ? 'You win! Paper beats Rock' :
+            'It\'s a Tie!';
+        return winnerDecl;
+    }
+        const playerSelection = "rock";
+        const computerSelection = computerPlay();
   </script>
 </body>
 </html>
