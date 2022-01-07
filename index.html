@@ -30,8 +30,31 @@
             'It\'s a Tie!';
         return winnerDecl;
     }
-        const playerSelection = "rock";
-        const computerSelection = computerPlay();
+
+    function game() {
+        let playerWinCount = 0;
+        let computerWinCount = 0;
+
+        for (let i = 0; i < 5; i++) {
+            const playerSelection = prompt("Choose between Rock, Paper, and Scissors!");
+            const computerSelection = computerPlay();
+            const roundWinnerMessage = playRound(playerSelection, computerSelection);
+            (roundWinnerMessage.charAt(4) == 'w') ? playerWinCount++ : computerWinCount++;
+            console.log(roundWinnerMessage);
+        }
+        if (playerWinCount > computerWinCount) {
+            console.log("You win the game!");
+        }
+        else if (playerWinCount < computerWinCount) {
+            console.log("The computer wins the game!");
+        }
+        else {
+            console.log("The game is a tie!");
+        }
+    }
+
+    game(); 
+    
   </script>
 </body>
 </html>
