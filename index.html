@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Page Title</title>
+  <title>Rock Paper Scissors</title>
   <meta charset="UTF-8"/>
 </head>
 <body>
     <button id = "Rock">Rock</button>
     <button id = "Paper">Paper</button>
     <button id = "Scissors">Scissors</button>
+
+    <div id = "results">
+        <p id = "playerScore">Player: 0</p>
+        <p id = "computerScore">Computer: 0</p>
+    </div>
   <script>
     function computerPlay() {
         const randomNum = Math.floor(Math.random()*3);
@@ -20,10 +25,9 @@
         else return 'Paper';
     }
     
-    function playRound(playerSelection, computerSelection) {
-       // console.log(playerSelection);
+    function playRound(playerSelection) {
+        const computerSelection = computerPlay();
         const playerSelectionCorrected = this.id;
-       // console.log(playerSelectionCorrected);
         const winnerDecl = (playerSelectionCorrected == 'Rock' && computerSelection == 'Scissors') ? 'You win! Rock beats Scissors' :
             (playerSelectionCorrected == 'Rock' && computerSelection == 'Paper') ? 'You lose! Paper beats Rock' :
             (playerSelectionCorrected == 'Rock' && computerSelection == 'Rock') ? 'It\'s a Tie!' :
@@ -33,37 +37,67 @@
             (playerSelectionCorrected == 'Paper' && computerSelection == 'Scissors') ? 'You lose! Scissors beats Paper' :
             (playerSelectionCorrected == 'Paper' && computerSelection == 'Rock') ? 'You win! Paper beats Rock' :
             'It\'s a Tie!';
-        return winnerDecl;
+        const roundDisplay = document.createElement('p');
+        const roundWinnerMessage = document.createElement('p');
+        roundDisplay.textContent = `Round ${roundNumber}:`;
+        roundWinnerMessage.textContent = winnerDecl;
+        resultsDiv.appendChild(roundDisplay);
+        resultsDiv.appendChild(roundWinnerMessage);
+        roundNumber++;
+        if (winnerDecl.includes('win')) {
+            playerWinCount++;
+            playerScore.textContent = `Player: ${playerWinCount}`;
+        }
+        else if (winnerDecl.includes('lose')) { 
+            computerWinCount++;
+            computerScore.textContent = `Computer: ${computerWinCount}`;
+        }
+        
+        if (playerWinCount == 5 || computerWinCount == 5) {
+            if (playerWinCount > computerWinCount) {
+                const gameWinnerMessage = document.createElement('p');
+                gameWinnerMessage.textContent = "You win the game!";
+                resultsDiv.appendChild(gameWinnerMessage);
+            }
+            else if (playerWinCount < computerWinCount) {
+                const gameWinnerMessage = document.createElement('p');
+                gameWinnerMessage.textContent = "The computer wins the game!";
+                resultsDiv.appendChild(gameWinnerMessage);
+            }
+            else {
+                const gameWinnerMessage = document.createElement('p');
+                gameWinnerMessage.textContent = "The game is a tie!";
+                resultsDiv.appendChild(gameWinnerMessage);
+            }
+            let playAgain = prompt('Would you like to play again? (Yes/No)');
+            console.log(playAgain);
+            console.log(playAgain.slice(0,1).toUpperCase() + playAgain.slice(1).toLowerCase());
+            if (playAgain.slice(0,1).toUpperCase() + playAgain.slice(1).toLowerCase() == 'Yes') {
+                playerWinCount = 0;
+                computerWinCount = 0;
+                const paragraphs = document.querySelectorAll('p');
+                paragraphs.forEach(paragraph => !(paragraph.getAttribute('id') == 'playerScore' || paragraph.getAttribute('id') == 'computerScore') ? resultsDiv.removeChild(paragraph) : paragraph);
+                playerScore.textContent = `Player: ${playerWinCount}`;
+                computerScore.textContent = `Computer: ${computerWinCount}`;
+                roundNumber = 1;
+            }
+            else {
+                const goodbyeMessage = document.createElement('p');
+                goodbyeMessage.textContent = 'Thanks for playing! Bye!';
+                resultsDiv.appendChild(goodbyeMessage);
+                buttons.forEach(button => button.removeEventListener('click', playRound));
+            }        
+        }        
     }
-    /*
-    function game() {
-        let playerWinCount = 0;
-        let computerWinCount = 0;
-        //for (let i = 0; i < 5; i++) {
-            const playerSelection = prompt("Choose between Rock, Paper, and Scissors!");
-            const computerSelection = computerPlay();
-            const roundWinnerMessage = playRound(playerSelection, computerSelection);
-            (roundWinnerMessage.charAt(4) == 'w') ? playerWinCount++ : computerWinCount++;
-            console.log(roundWinnerMessage);
-       // }
-        if (playerWinCount > computerWinCount) {
-            console.log("You win the game!");
-        }
-        else if (playerWinCount < computerWinCount) {
-            console.log("The computer wins the game!");
-        }
-        else {
-            console.log("The game is a tie!");
-        }
-    }
-
-    game();
-    */
-
-    
+    let roundNumber = 1;
+    let playerWinCount = 0;
+    let computerWinCount = 0;
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => button.addEventListener('click', playRound));
-
+    const resultsDiv = document.querySelector('#results');
+    const playerScore = document.querySelector('#playerScore');
+    const computerScore = document.querySelector('#computerScore');
+    
   </script>
 </body>
 </html>
